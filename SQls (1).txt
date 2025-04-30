@@ -1,0 +1,1718 @@
+SELECT j.jobid,
+       j.emailname,
+       j.deliveredtime AS 'SendTime',
+       o.eventdate     AS 'OpenTime',
+       s.emailaddress,
+       s.subscriberkey
+FROM   [_job] AS j
+       INNER JOIN [_open] AS o
+               ON j.jobid = o.jobid
+       INNER JOIN [_subscribers] AS s
+               ON o.subscriberid = s.subscriberid
+WHERE  o.isunique = 1
+       AND o.eventdate > Dateadd(day, -30, Getdate())
+
+
+
+SELECT c.jobid,
+       j.emailname,
+       j.deliveredtime,
+       c.eventdate
+FROM   [_job] AS j
+       INNER JOIN [_click] AS c
+               ON j.jobid = c.jobid
+       
+WHERE  c.isunique = 1
+       AND c.eventdate > Dateadd(day, -30, Getdate())
+
+SELECT 
+s.subscriberkey
+from [_subscribers] s
+
+
+NPI_Opens_%%Year%%_%%Month%%_%%Day%%.csv
+
+
+SELECT j.jobid,
+       j.emailname,
+       j.deliveredtime,
+       o.eventdate,
+       o.subscriberkey
+FROM   [_job] AS j
+       INNER JOIN [_open] AS o
+               ON j.jobid = o.jobid
+       WHERE  o.isunique = 1
+       AND o.eventdate > Dateadd(day, -30, Getdate())
+============
+
+
+SELECT j.jobid,
+       j.emailname,
+       j.deliveredtime AS 'SendTime',
+       o.eventdate AS 'ClickTime',
+       o.subscriberkey
+FROM   [_job] AS j
+       INNER JOIN [_open] AS o
+               ON j.jobid = o.jobid
+       WHERE  o.isunique = 1
+       AND o.eventdate > Dateadd(day, -30, Getdate())
+
+
+
+Aveo_Fotivda_NPI_Clicks_%%Year%%_%%Month%%_%%Day%%.csv
+
+===========
+
+select 
+Email_NWK__c,
+PersonEmail,
+Case
+  When Email_NWK__c is not null then Email_NWK__c
+  When PersonEmail  is not null then PersonEmail
+End as SFMC_Merged_Email_Address
+from ENT.Account_Salesforce_Copy
+
+============
+
+select stop_email_journey, count(NPI) from SFMC_Audience_Tivo3_C2
+group by stop_email_journey;
+
+select NPI,stop_email_journey from SFMC_Audience_Tivo3_C2
+where stop_email_journey=0;
+
+================
+
+
+select 
+j.emailname,
+       j.subscriberkey,
+       j.URL,
+       j.LinkContent,
+       count(subscriberkey)
+from NPI_Clicks_Nonunique_data j
+group by j.subscriberkey,j.emailname, J.URL,j.LinkContent
+having count(*) > 1
+
+============
+
+
+
+select 
+j.emailname,
+       j.subscriberkey,
+       j.URL,
+       j.LinkContent
+from NPI_Clicks_Nonunique_data j
+where j.subscriberkey =1043249584
+and j.emailname ='Tealium_Omni_S1A_S1B_Efficacy_1_SL1'
+=============
+
+select 
+A.subscriberkey, 
+count(distinct A.emailname)
+from NPI_Clicks_History_groupbycounts A INNER JOIN SFMC_Audience_Efficacy_C1 B
+ON A.subscriberkey=B.NPI
+where emailname = 'Tealium_Omni_S1A_S1B_Efficacy_1_SL1'
+or emailname ='Tealium_Omni_S1A_S1B_Tivo3_2_SL1'
+or emailname='Tealium_Omni_S1A_S1B_Tolerability_3_SL1'
+group by subscriberkey
+having count(distinct A.emailname) =3
+===========
+
+
+
+select SubscriberKey 
+from NPI_Clicks_Nonunique_data
+where SubscriberKey in 
+(
+'1053639880',
+'1083706964',
+'1093760290',
+'1134241391',
+'1285079988',
+'1346254430',
+'1366738098',
+'1417049396',
+'1427027119',
+'1497723514',
+'1548490329',
+'1619941804',
+'1720098064',
+'1790723328',
+'1003883182',
+'1063481190',
+'1093784985',
+'1104836154',
+'1134391899',
+'1205808466',
+'1255769071',
+'1326130204',
+'1427068618',
+'1447749775',
+'1508275603',
+'1588979306',
+'1639209224',
+'1770552317',
+'1770564932',
+'1811382625',
+'1821201666',
+'1831158062',
+'1962977728'
+)
+
+
+
+
+select SubscriberKey 
+from NPI_Clicks_Nonunique_data
+where SubscriberKey in 
+(
+'1922360585'
+);
+
+
+
+
+select NPI 
+from SFMC_Audience_Efficacy_C1
+where NPI in 
+(
+'1053639880',
+'1083706964',
+'1093760290',
+'1134241391',
+'1285079988',
+'1346254430',
+'1366738098',
+'1417049396',
+'1427027119',
+'1497723514',
+'1548490329',
+'1619941804',
+'1720098064',
+'1790723328',
+'1003883182',
+'1063481190',
+'1093784985',
+'1104836154',
+'1134391899',
+'1205808466',
+'1255769071',
+'1326130204',
+'1427068618',
+'1447749775',
+'1508275603',
+'1588979306',
+'1639209224',
+'1770552317',
+'1770564932',
+'1811382625',
+'1821201666',
+'1831158062',
+'1962977728'
+)
+
+
+
+select NPI, SFMC_Merged_Email_Address
+from SFMC_Audience_Efficacy_C1
+where SFMC_Merged_Email_Address like '%icloud%'
+or SFMC_Merged_Email_Address like '%yahoo%'
+or SFMC_Merged_Email_Address like '%outlook%'
+or SFMC_Merged_Email_Address like '%gmail%'
+
+
+
+================
+
+
+
+select 
+j.emailname,
+       j.subscriberkey,
+       j.URL,
+       j.LinkContent,
+       max(ClickTime) as max_clicktime,
+       count(subscriberkey)
+from NPI_Clicks_Nonunique_data j
+where emailname like '%Tealium_Omni_S1A_S1B%'
+group by j.subscriberkey,j.emailname, J.URL,j.LinkContent
+having count(*) > 1;
+
+============
+
+
+
+select 
+j.emailname,
+       j.subscriberkey,
+       j.URL,
+       j.LinkContent,
+       max(ClickTime) as max_clicktime,
+       count(subscriberkey)
+from NPI_Clicks_Nonunique_data j inner join SFMC_Audience_Efficacy_C1 B
+ON j.subscriberkey=B.NPI
+where emailname like '%Tealium_Omni_S1A_S1B%'
+group by j.subscriberkey,j.emailname, J.URL,j.LinkContent
+having count(*) > 1;
+
+
+=========
+
+select 
+j.emailname,
+       j.subscriberkey,
+       j.domain,
+       j.LinkContent,
+       max(ClickTime) as max_clicktime,
+       count(subscriberkey)
+from NPI_Clicks_Nonunique_data j inner join SFMC_Audience_Efficacy_C1 B
+ON j.subscriberkey=B.NPI
+where emailname like '%Tealium_Omni_S1A_S1B%'
+and j.domain in ('yahoo.com','gmail.com','outlook.com','icloud.com','hotmail.com')
+group by j.subscriberkey,j.emailname, J.domain,j.LinkContent
+having count(*) > 1;
+
+=============
+
+
+
+select 
+A.subscriberkey, 
+B.First_Name,
+B.Last_Name,
+count(distinct A.emailname)
+from NPI_Clicks_History_groupbycounts A INNER JOIN SFMC_Audience_Efficacy_C1 B
+ON A.subscriberkey=B.NPI
+where emailname = 'Tealium_Omni_S1A_S1B_Efficacy_1_SL1'
+or emailname ='Tealium_Omni_S1A_S1B_Tivo3_2_SL1'
+or emailname='Tealium_Omni_S1A_S1B_Tolerability_3_SL1'
+group by subscriberkey,B.First_Name,B.Last_Name
+having count(distinct A.emailname) =3;
+
+===========
+
+
+
+select 
+j.emailname,
+       j.subscriberkey as NPI,
+       B.First_Name,
+       B.Last_Name,
+       j.LinkContent,
+       j.domain,
+       max(ClickTime) as max_clicktime,
+       count(subscriberkey)
+from NPI_Clicks_Nonunique_data j inner join SFMC_Audience_Efficacy_C1 B
+ON j.subscriberkey=B.NPI
+where emailname like '%Tealium_Omni_S1A_S1B%'
+group by j.subscriberkey,j.emailname, j.LinkContent,B.First_Name,B.Last_Name, j.domain
+having count(*) > 1
+============
+
+
+
+select 
+j.emailname,
+       j.subscriberkey ,
+       B.First_Name,
+       B.Last_Name,
+       j.LinkContent,
+       j.domain,
+       min(ClickTime),
+       max(ClickTime),
+       DATEDIFF(minute, max(ClickTime), min(ClickTime)),
+       count(subscriberkey)
+from NPI_Clicks_Nonunique_data j inner join SFMC_Audience_Efficacy_C1 B
+ON j.subscriberkey=B.NPI
+where emailname like '%Tealium_Omni_S1A_S1B%'
+group by j.subscriberkey,j.emailname, j.LinkContent,B.First_Name,B.Last_Name, j.domain
+having count(*) > 1;
+
+
+==========
+
+
+select s.SubscriberKey,ja.activitytype
+from    [_sent] s
+       INNER JOIN [_journeyactivity] ja
+               ON s.triggerersenddefinitionobjectid = ja.journeyactivityobjectid
+       INNER JOIN [_journey] j
+               ON ja.versionid = j.versionid
+       INNER JOIN SFMC_Audience_Efficacy_C1 B
+               ON s.SubscriberKey = B.NPI
+ WHERE  ja.activitytype IN ( 'EMAIL', 'EMAILV2' )
+ and j.journeyname = 'Pilot_Email_Journey_Efficacy_Creative1_Prod'
+       AND s.eventdate > Dateadd(day, -30, Getdate())
+
+=============
+
+
+select 
+s.SubscriberKey,
+j.journeyname,
+jo.emailname,
+jo.EmailSubject,
+s.eventdate
+from    [_sent] s
+       INNER JOIN [_journeyactivity] ja
+               ON s.triggerersenddefinitionobjectid = ja.journeyactivityobjectid
+       INNER JOIN [_journey] j
+               ON ja.versionid = j.versionid
+       INNER JOIN SFMC_Audience_Efficacy_C1 B
+               ON s.SubscriberKey = B.NPI
+        INNER JOIN [_job] jo
+        ON jo.jobid=s.jobid
+        INNER JOIN [_click] c
+        ON jo.jobid=c.jobid
+        INNER JOIN [_open] o
+        on o.jobid=jo.jobid
+ WHERE  ja.activitytype IN ( 'EMAIL', 'EMAILV2' )
+ and j.journeyname  in
+ ('Pilot_Email_Journey_Efficacy_Creative1_Prod',
+ 'Pilot_Email_Journey_Tivo3_Creative2_Prod',
+ 'Pilot_Email_Journey_Tolerability_Creative3_Prod')
+       AND s.eventdate > Dateadd(day, -30, Getdate())
+
+
+============
+
+
+select 
+o.subscriberkey,
+j.journeyname,
+j.emailname,
+j.EmailSubject,
+j.sendtime,
+o.eventdate
+from SFMC_Journey_Sends j LEFT JOIN [_open] AS o
+               ON j.jobid = o.jobid
+               and j.subscriberkey=o.subscriberkey
+       WHERE  o.isunique = 1
+              AND o.eventdate > Dateadd(day, -10, Getdate())
+       group by j.journeyname,j.emailname,j.EmailSubject,o.eventdate,o.subscriberkey,j.sendtime
+
+
+=============
+
+
+
+select 
+o.subscriberkey,
+j.journeyname,
+j.emailname,
+j.EmailSubject,
+o.eventdate,
+c.eventdate,
+c.URL,
+c.LinkName,
+c.LinkContent,
+sum(c.eventdate)
+from SFMC_Journey_Sends j LEFT OUTER JOIN [_open] AS o
+               ON j.jobid = o.jobid
+               LEFT OUTER JOIN [_click] AS c
+               ON c.jobid = j.jobid
+       WHERE  o.isunique = 1
+       AND o.eventdate > Dateadd(day, -10, Getdate())
+       group by j.journeyname,j.emailname,j.EmailSubject,o.eventdate ,o.subscriberkey
+
+
+      /* group by j.journeyname,j.emailname,j.EmailSubject,o.eventdate ,o.subscriberkey*/
+
+ AND o.eventdate > Dateadd(day, -10, Getdate())
+
+============
+
+
+select 
+o.subscriberkey,
+j.journeyname,
+j.emailname,
+j.EmailSubject,
+j.sendtime,
+/*o.eventdate,*/
+c.eventdate,
+c.URL,
+c.LinkName,
+c.LinkContent,
+sum(c.eventdate)
+from SFMC_Journey_Sends j LEFT JOIN [_open] AS o
+               ON j.jobid = o.jobid
+               and j.subscriberkey=o.subscriberkey
+               LEFT JOIN [_click] AS c
+               ON c.jobid = j.jobid
+               and j.subscriberkey=c.subscriberkey
+       WHERE  o.isunique = 1
+       /*and o.subscriberkey='1649314220'*/
+       AND c.eventdate > Dateadd(day, -10, Getdate())
+       group by j.journeyname,j.emailname,j.EmailSubject,
+       /*o.eventdate,*/
+       o.subscriberkey,j.sendtime,c.eventdate,c.URL,c.LinkName,c.LinkContent
+
+
+=============
+
+Journey completion SQLs:
+select 
+A.subscriberkey, 
+count(distinct A.emailname)
+from NPI_Clicks_History_groupbycounts A INNER JOIN SFMC_Audience_Efficacy_C1 B
+ON A.subscriberkey=B.NPI
+where emailname like '%Tealium_Omni_S1A_S1B%'
+group by subscriberkey
+having count(distinct A.emailname) =3
+
+===========
+
+
+select NPI_vod__c, SFMC_Merged_Email_Address from ENT.Initial_Audience_List_ValidRecords
+where FOTIVDA_Tier__c = 'Tier 3'
+
+
+===========
+Request a Rep final sql:
+
+select 
+j.emailname,
+       j.subscriberkey,
+       j.URL,
+       j.LinkContent,
+       max(ClickTime) as max_clicktime,
+       count(subscriberkey)
+from NPI_Clicks_Nonunique_data j inner join SFMC_Audience_Efficacy_C1 B
+ON j.subscriberkey=B.NPI
+where emailname like '%Tealium_Omni_S1A_S1B%'
+group by j.subscriberkey,j.emailname, J.URL,j.LinkContent
+having count(*) > 1
+
+
+==========
+
+
+select
+A.Journey_name,
+A.[Date],
+A.count,
+tmp.total
+from
+(
+select count(NPI) as total 
+from SFMC_Audience_LT_PFS_C1
+)tmp INNER JOIN Dashboard_Datapull_DE3 A
+ON tmp.total != A.total
+
+
+
+
+
+
+==========
+
+
+
+SELECT j.jobid,
+       j.emailname,
+       max(o.eventdate),
+       o.subscriberkey,
+       o.URL,
+       o.LinkName,
+       o.LinkContent
+FROM   [_job] AS j
+       INNER JOIN [_click] AS o
+               ON j.jobid = o.jobid
+       WHERE o.eventdate > Dateadd(day, -15, Getdate())
+       and emailname like 'Tealium_Omni_S2A_S2B%'
+       group by j.jobid,j.emailname,o.subscriberkey,o.URL,o.LinkName,o.LinkContent
+
+==========
+
+Journey completion SQLs for Seg2AB:
+
+select 
+A.subscriberkey, 
+count(distinct A.emailname)
+from NPI_Clicks_History_groupbycounts A INNER JOIN SFMC_Audience_LT_PFS_C1 B
+ON A.subscriberkey=B.NPI
+where emailname like '%Tealium_Omni_S2A_S2B%'
+group by subscriberkey
+having count(distinct A.emailname) =3
+
+
+select 
+A.subscriberkey, 
+count(distinct A.emailname),
+B.first_name,
+B.last_name
+from NPI_Clicks_History_groupbycounts A INNER JOIN SFMC_Audience_LT_PFS_C1 B
+ON A.subscriberkey=B.NPI
+where emailname like '%Tealium_Omni_S2A_S2B%'
+group by subscriberkey,B.first_name,B.last_name
+having count(distinct A.emailname) >=3
+
+========
+
+
+SELECT j.emailname,
+       DATEPART(YEAR, MONTH, o.eventdate) ,
+       count(o.subscriberkey)
+FROM   [_job] AS j
+       INNER JOIN [_click] AS o
+               ON j.jobid = o.jobid
+       WHERE o.eventdate > Dateadd(day, -16, Getdate())
+       and emailname like 'Tealium_Omni_S2A_S2B%'
+       group by j.emailname,DATEPART(YEAR, MONTH, o.eventdate)
+
+
+=====
+not working
+SELECT j.emailname,
+       CONVERT( DATE, 'o.eventdate'),
+       count(o.subscriberkey)
+FROM   [_job] AS j
+       INNER JOIN [_click] AS o
+               ON j.jobid = o.jobid
+       WHERE o.eventdate > Dateadd(day, -16, Getdate())
+       and emailname like 'Tealium_Omni_S2A_S2B%'
+       group by j.emailname,CONVERT( DATE, 'o.eventdate')
+
+=============
+
+select
+A.npi
+from SFMC_Audience_Efficacy_C1 A 
+where A.npi not in 
+(select B.NPI from SFMC_Audience_Tivo3_C2 B )
+and A.npi not in (select C.SubscriberKey from NPI_Bounces_Seg1AB_History C)
+
+==========
+
+select
+A.npi,
+'45Day_NonResponders' as EventType,
+'Tealium_Omni_S1A_S1B_Efficacy_1_SL3' as Email_version
+from SFMC_Audience_Efficacy_C1 A 
+where A.npi not in 
+(select B.NPI from SFMC_Audience_Tivo3_C2 B )
+and A.npi not in (select C.SubscriberKey from NPI_Bounces_Seg1AB_History C)
+============
+This query provides the same result as the above one:
+select 
+tmp.npi
+from
+(
+select
+A.npi
+from SFMC_Audience_Efficacy_C1 A 
+where A.npi not in (select B.NPI from SFMC_Audience_Tivo3_C2 B )
+)tmp
+where tmp.npi not in (select C.SubscriberKey from NPI_Bounces_Seg1AB_History C) 
+
+=============
+
+
+select 
+A.NPI,
+A.SFMC_Merged_Email_Address
+from SFMC_Audience_Efficacy_C1 A inner join NPI_Bounces_Seg1AB_History B
+ON A.NPI=B.SubscriberKey
+
+===========
+
+
+
+select 
+A.SubscriberKey as NPI,
+A.EmailAddress,
+B.SFMC_Merged_Email_Address,
+B.PersonEmail,
+Case
+  When A.EmailAddress = B.SFMC_Merged_Email_Address AND  A.EmailAddress != B.PersonEmail
+  then B.PersonEmail 
+  When A.EmailAddress = B.SFMC_Merged_Email_Address AND B.PersonEmail is NULL
+  then B.PersonEmail
+  When A.EmailAddress = B.SFMC_Merged_Email_Address AND  A.EmailAddress = B.PersonEmail
+  then 'Already Bounced emailaddress'
+End as Final_Email_Address
+from NPI_Bounces_Seg1AB_History_SK A INNER JOIN ENT.Initial_Audience_List_ValidRecords B
+on A.SubscriberKey = B.NPI_vod__c
+
+=========
+
+select 
+NPI,
+Final_Email_Address
+from Bounced_EmailAddress_FinalList
+where Final_Email_Address is not null
+
+======
+
+select 
+Count(distinct NPI),
+Final_Email_Address
+from Bounced_EmailAddress_FinalList
+group by Final_Email_Address
+
+=========
+
+New email address: 311
+Empty(NULL) email address: 127
+Already bounced: 11
+
+
+========
+FInal Bounced valid email address list:
+
+select 
+NPI,
+Final_Email_Address
+from Bounced_EmailAddress_FinalList
+where Final_Email_Address is not null 
+and Final_Email_Address != 'Already Bounced emailaddress';
+
+=======
+
+FInal query for Already bounced + NULLs
+select 
+NPI,
+Final_Email_Address
+from Bounced_EmailAddress_FinalList
+where Final_Email_Address is null 
+or  Final_Email_Address like 'Already Bounced emailaddress'
+===========
+
+
+select 
+NPI,
+Final_Email_Address,
+'UpdateEmail' as EventType
+from Bounced_EmailAddress_FinalList
+where Final_Email_Address is not null 
+and Final_Email_Address != 'Already Bounced emailaddress'
+
+
+=========
+
+
+select 
+A. NPI_vod__c, 
+A.SFMC_Merged_Email_Address
+from ENT.Initial_Audience_List_ValidRecords A
+where A.NPI_vod__c='1427514199'
+
+==========
+
+
+
+select 
+tmp.NPI,
+'15Day_NonResponders' as EventType,
+B.emailname,
+B.sendtime
+from
+(
+select 
+A.SubscriberKey as NPI,
+max(A.SendTime) as max_sendtime
+from SFMC_Journey_Sends_V1 A
+group by A.SubscriberKey
+)tmp INNER JOIN SFMC_Journey_Sends_V1 B
+ON tmp.NPI=B.SubscriberKey
+where tmp.max_sendtime = B.sendtime
+and CONVERT(date, B.sendtime) = CONVERT(date,DATEADD(d,-30,getDate()))
+
+
+
+
+
+
+
+
+===================
+Final SQLs for Non-responders -  12/15/2023
+=========
+
+
+select 
+tmp.NPI,
+'30Day_NonResponders' as EventType,
+B.emailname as Email_version
+from
+(
+select 
+A.SubscriberKey as NPI,
+max(A.SendTime) as max_sendtime
+from SFMC_Journey_Sends_Final A
+group by A.SubscriberKey
+)tmp INNER JOIN SFMC_Journey_Sends_Final B
+ON tmp.NPI=B.SubscriberKey
+where tmp.max_sendtime = B.sendtime
+and CONVERT(date, B.sendtime) = CONVERT(date,DATEADD(d,-15,getDate()))
+and (B.emailname like '%_SL2')
+=============
+
+
+
+select 
+tmp.NPI,
+'15Day_NonResponders' as EventType,
+B.emailname as Email_version
+from
+(
+select 
+A.SubscriberKey as NPI,
+max(A.SendTime) as max_sendtime
+from SFMC_Journey_Sends_Final A
+group by A.SubscriberKey
+)tmp INNER JOIN SFMC_Journey_Sends_Final B
+ON tmp.NPI=B.SubscriberKey
+where tmp.max_sendtime = B.sendtime
+and CONVERT(date, B.sendtime) = CONVERT(date,DATEADD(d,-15,getDate()))
+and (B.emailname like '%_SL1')
+==========
+
+
+select 
+tmp.NPI,
+'45Day_NonResponders' as EventType,
+B.emailname as Email_version
+from
+(
+select 
+A.SubscriberKey as NPI,
+max(A.SendTime) as max_sendtime
+from SFMC_Journey_Sends_Final A
+group by A.SubscriberKey
+)tmp INNER JOIN SFMC_Journey_Sends_Final B
+ON tmp.NPI=B.SubscriberKey
+where tmp.max_sendtime = B.sendtime
+and CONVERT(date, B.sendtime) = CONVERT(date,DATEADD(d,-15,getDate()))
+and (B.emailname like '%_SL3')
+
+
+
+
+===============
+
+
+
+select 
+tmp.NPI,
+'45Day_NonResponders' as EventType,
+B.emailname as Email_version
+from
+(
+select 
+A.SubscriberKey as NPI,
+max(A.SendTime) as max_sendtime
+from SFMC_Journey_Sends_Final A
+group by A.SubscriberKey
+)tmp INNER JOIN SFMC_Journey_Sends_Final B
+ON tmp.NPI=B.SubscriberKey
+where tmp.max_sendtime = B.sendtime
+and CONVERT(date, B.sendtime) = getDate()
+and (B.emailname like '%_SL3')
+===============
+
+
+
+select 
+tmp.NPI,
+'45Day_NonResponders' as EventType,
+B.emailname as Email_version
+from
+(
+select 
+A.SubscriberKey as NPI,
+max(A.SendTime) as max_sendtime
+from SFMC_Journey_Sends_Final A
+group by A.SubscriberKey
+)tmp INNER JOIN SFMC_Journey_Sends_Final B
+ON tmp.NPI=B.SubscriberKey
+where tmp.max_sendtime = B.sendtime
+
+============
+
+
+
+and tmp.NPI not in (select NPI from SFMC_Audience_Tivo3_C2)
+and tmp.NPI not in (select NPI from SFMC_Audience_Tolerability_C3)
+and tmp.NPI not in (select NPI from SFMC_Audience_Seg2AB_Tolerability_C2)
+and tmp.NPI not in (select NPI from SFMC_Audience_1STOnly_C3)
+
+
+
+
+
+
+
+========
+Seg 1AB completers list query
+
+select 
+A.NPI, 
+Case
+  When A.first_name is not null then A.first_name
+  Else NULL
+  End as A.first_name,
+Case
+  When A.last_name is not null then A.last_name
+  Else NULL
+  End as A.last_name
+from SFMC_Audience_Efficacy_C1 A
+where A.NPI in 
+(
+'1043249584',
+'1043508666',
+'1053449504',
+'1053766329',
+'1093891673',
+'1124311956',
+'1134324536',
+'1144548736',
+'1215345913',
+'1225407976',
+'1275532970',
+'1275573644',
+'1285991638',
+'1326400946',
+'1336508563',
+'1346234788',
+'1396783122',
+'1407567522',
+'1417153701',
+'1427048537',
+'1427514199',
+'1598350423',
+'1619020179',
+'1629066220',
+'1659572261',
+'1659785988',
+'1699734251',
+'1750376349',
+'1821026121',
+'1821088063',
+'1841304409',
+'1871592154',
+'1871917633',
+'1891063103',
+'1942209234',
+'1952814113',
+'1992142046',
+'1609286251',
+'1649697707',
+'1902255276'
+)
+
+==================
+
+Seg 2AB completer's full name details query
+
+select 
+A.NPI, 
+Case
+  When A.first_name is not null then A.first_name
+  Else NULL
+  End as A.first_name,
+Case
+  When A.last_name is not null then A.last_name
+  Else NULL
+  End as A.last_name
+from SFMC_Audience_LT_PFS_C1  A
+where A.NPI in 
+(
+'1114157195',
+'1285228007',
+'1285793893',
+'1346635679',
+'1346658416',
+'1437535564',
+'1528393063',
+'1568776771',
+'1639689656',
+'1679749121',
+'1689935066',
+'1710207063',
+'1720081862',
+'1790795375',
+'1841284429',
+'1891792305',
+'1902049646',
+'1922120708',
+'1962663674',
+'1972089506',
+'1972691046',
+'1992303895'
+)
+
+
+
+
+
+
+
+
+
+
+=============handraisers query============
+
+select 
+A.NPI, 
+Case
+  When A.first_name is not null then A.first_name
+  Else NULL
+  End as A.first_name,
+Case
+  When A.last_name is not null then A.last_name
+  Else NULL
+  End as A.last_name,
+  SFMC_Merged_Email_Address
+from SFMC_Audience_Efficacy_C1 A
+where A.NPI in 
+(
+'1043249584',
+'1043508666',
+'1053449504',
+'1053766329',
+'1083904197',
+'1093891673',
+'1124311956',
+'1134324536',
+'1144548736',
+'1215345913',
+'1225407976',
+'1275532970',
+'1275573644',
+'1285991638',
+'1336508563',
+'1346234788',
+'1396783122',
+'1417153701',
+'1427048537',
+'1447661723',
+'1598350423',
+'1609286251',
+'1629066220',
+'1649697707',
+'1659572261',
+'1659785988',
+'1699734251',
+'1750376349',
+'1821026121',
+'1821088063',
+'1841304409',
+'1871592154',
+'1871917633',
+'1891063103',
+'1902255276',
+'1942209234',
+'1952814113',
+'1992142046'
+)
+
+============
+
+
+select 
+distinct A.NPI 
+from Seg12AB_HandRaisers_FromCDP1 A;  returned 293 records
+=========
+
+
+select 
+distinct A.NPI 
+from Seg12AB_HandRaisers_FromCDP1 A
+where A.NPI not in (select NPI from Journey_HCP365_Handraisers);  returned 239 records
+
+============
+
+select 
+A.NPI, 
+Case
+  When A.first_name is not null then A.first_name
+  Else NULL
+  End as A.first_name,
+Case
+  When A.last_name is not null then A.last_name
+  Else NULL
+  End as A.last_name,
+  SFMC_Merged_Email_Address
+from SFMC_Audience_Efficacy_C1 A
+where A.NPI in 
+(
+select 
+distinct A.NPI 
+from Seg12AB_HandRaisers_FromCDP1 A
+where A.NPI not in (select NPI from Journey_HCP365_Handraisers)
+)
+
+===========
+
+
+SELECT j.jobid,
+       j.emailname,
+       j.SendTime ,
+       max(j.ClickTime) ,
+       j.subscriberkey,
+       j.Domain,
+       j.URL,
+       j.LinkName,
+       j.LinkContent
+FROM   NPI_Clicks_Nonunique_data j
+       WHERE j.ClickTime >= '2023-11-01 00:00:00' AND j.ClickTime < '2023-11-02 00:00:00'
+       group by j.jobid,j.emailname,j.SendTime,j.subscriberkey,j.Domain,j.URL,j.LinkName,j.LinkContent
+
+============
+
+new queries -03/07/2024
+
+select 
+distinct A.NPI 
+from Seg1AB_HandRaisers_FromCDP1 A -- 92 records
+
+
+select 
+distinct A.NPI 
+from Seg2AB_HandRaisers_FromCDP1 A  --93 records
+
+
+select 
+distinct A.NPI 
+from Seg1AB_HandRaisers_FromCDP1 A
+where A.NPI not in (select NPI from Journey_HCP365_Handraisers) -- 81 records
+
+
+select 
+distinct A.NPI 
+from Seg2AB_HandRaisers_FromCDP1  A
+where A.NPI not in (select NPI from Journey_HCP365_Handraisers) -- 71 records
+
+
+
+select 
+distinct A.NPI 
+from Seg12AB_HandRaisers_FromCDP1  A
+where A.NPI not in (select NPI from Journey_HCP365_Handraisers) -- 152 records
+
+============
+=========Seg1AB firstname queries
+select 
+A.NPI, 
+SFMC_Merged_Email_Address,
+A.first_name,
+A.last_name
+from SFMC_Audience_Efficacy_C1 A
+where A.NPI in 
+(
+select 
+distinct B.NPI 
+from Seg12AB_HandRaisers_FromCDP1 B
+where B.NPI not in (select NPI from Journey_HCP365_Handraisers)
+)
+
+=======
+
+Query for 1 NPI we couldn't find
+select distinct A.NPI
+from Seg1AB_handraisers_NPIOnly A
+where A.NPI not in (select NPI from Journey_HCP365_Handraisers_03052024)
+
+===============
+
+select distinct A.NPI from SFMC_Audience_Efficacy_C1 A
+where A.NPI  not in (select NPI from Journey_HCP365_Handraisers)
+and A.NPI not in (select NPI from Journey_HCP365_Handraisers_03052024) -- 5081 records
+
+select distinct A.NPI from Non_Responders_Subgroupemail_data A
+where A.NPI in (select SubscriberKey from NPI_Bounces_Category where BounceCategory = 'Soft bounce') = 127 records
+
+
+select distinct A.NPI from Non_Responders_Subgroupemail_data A
+where A.NPI in (select SubscriberKey from NPI_Bounces_Category where BounceCategory = 'Hard bounce') == 345 records
+
+
+select distinct A.NPI from Non_Responders_Subgroupemail_data A
+where A.NPI not in (select SubscriberKey from NPI_Bounces_Category where BounceCategory = 'Hard bounce')
+and A.NPI not in (select SubscriberKey from NPI_Unsubscribes)
+
+
+select 
+A.NPI, 
+SFMC_Merged_Email_Address,
+A.first_name,
+A.last_name
+from SFMC_Audience_Efficacy_C1 A
+where A.NPI in 
+(
+select distinct A.NPI from Non_Responders_Subgroupemail_data A
+where A.NPI not in (select SubscriberKey from NPI_Bounces_Category where BounceCategory = 'Hard bounce')
+and A.NPI not in (select SubscriberKey from NPI_Unsubscribes)
+)
+
+
+==========
+
+select 
+NPI, 
+'45Day_NonResponders' as EventType,
+CONCAT('Tealium_Omni_S2A_S2B_2_Tolerability_SL3', '_','Bounces') as Email_version
+from SFMC_Audience_Seg2AB_Tolerability_C2
+where SFMC_Merged_Email_Address =''
+and stop_email_journey='0'
+==========
+
+
+
+select distinct A.NPI from SFMC_Audience_LT_PFS_C1 A
+where A.NPI   in (select NPI from Journey_HCP365_Handraisers)
+or A.NPI  in (select NPI from Journey_HCP365_Handraisers_03052024)
+
+
+==========
+
+
+select 
+B.NPI,
+B.[FOTIVDA Tier],
+B.SFMC_Merged_Email_Address
+from Target_List_new_041124_PK B
+where B.[FOTIVDA Tier] ='Tier 1'
+
+=======
+
+
+
+SELECT 
+s.npi as Contact_Custom_npi,
+s.SFMC_Merged_Email_Address
+from PRJ002187_Email_TESTing_DE01 s INNER JOIN RXNT_Dataload1 A
+ON s.npi= A.Contact_Custom_npi
+
+========
+
+SELECT
+A.npi,
+A.Action_Source,
+s.EmailAddress
+from ent._ListSubscribers s INNER JOIN RXNT_Dataload2 A
+ON s.subscriberkey = A.npi
+
+========
+
+
+select 
+A.NPI, 
+A.action_source,
+Case
+  When A.Action_Source LIKE '%BR4%' then 'P1'
+  When (A.Action_Source LIKE '%BR2%') OR (A.Action_Source LIKE '%BR3%') then 'P2'
+  When A.Action_Source LIKE '%BR6%' then 'P3'
+  When A.Action_Source LIKE '%BR5%' then 'P4'
+  When A.Action_Source LIKE '%BR1%' then 'P5'
+    End as A.BR_Priority
+from RXNT_Dataload2 A
+=========
+
+
+
+select 
+tmp.NPI,
+tmp.RANKING_NUM,
+B.First_Name,
+B.Last_Name,
+B.Action_Source,
+B.SFMC_Merged_Email_Address
+from 
+(
+select 
+A.NPI,
+min(A.BR_Priority_Num) as RANKING_NUM
+from RXNT_Dataload2 A
+group by A.NPI
+)tmp INNER JOIN RXNT_Dataload2 B
+ON B.NPI=tmp.NPI
+and B.BR_Priority_Num=tmp.RANKING_NUM
+
+========
+
+
+select 
+A.NPI, 
+A.action_source,
+Case
+  When A.Action_Source LIKE '%BR4%' and (B.BR_4_Email_Sent IS NULL) then 1
+  When A.Action_Source LIKE '%BR4%' and (B.BR_4_Email_Sent='NBA_P1_BR4_01' OR B.BR_4_Email_Sent='NBA_P1_BR4_02') then 1
+  When A.Action_Source LIKE '%BR4%' and (B.BR_4_Email_Sent='NBA_P1_BR4_03') then 999
+  When ((A.Action_Source LIKE '%BR2%') OR (A.Action_Source LIKE '%BR3%')) and (B.BR_2_3_Email_Sent IS NULL) then 2
+  When ((A.Action_Source LIKE '%BR2%') OR (A.Action_Source LIKE '%BR3%')) and (B.BR_2_3_Email_Sent ='NBA_P2_BR2_BR3_01') then 2
+  When ((A.Action_Source LIKE '%BR2%') OR (A.Action_Source LIKE '%BR3%')) and (B.BR_2_3_Email_Sent ='NBA_P2_BR2_BR3_02') then 999
+  When A.Action_Source LIKE '%BR6%' and (B.BR_6_Email_Sent IS NULL) then 3
+  When A.Action_Source LIKE '%BR6%' and (B.BR_6_Email_Sent ='NBA_P3_BR6_01') then 999
+  When A.Action_Source LIKE '%BR5%' and (B.BR_5_Email_Sent IS NULL) then 4
+  When A.Action_Source LIKE '%BR5%' and (B.BR_5_Email_Sent ='NBA_P4_BR5_01') then 999
+  When A.Action_Source LIKE '%BR1%' and (B.BR_1_Email_Sent IS NULL) then 5
+  When A.Action_Source LIKE '%BR1%' and (B.BR_1_Email_Sent ='NBA_P5_BR1_01') then 999
+    End as BR_Priority_Num
+from RXNT_Dataload2 A INNER JOIN RXNT_Dataload_Journeytrigger B
+ON A.NPI=B.NPI
+===========
+
+
+
+select 
+s.SubscriberKey,
+jo.emailname,
+jo.EmailSubject,
+s.eventdate AS 'SendTime',
+s.jobid,
+'SFMC Sends' as EventType
+from    [_sent] s
+INNER JOIN [_job] jo
+              ON jo.jobid=s.jobid
+WHERE s.jobid  in (113900,107975,103843,92962)
+
+============
+
+
+
+SELECT 
+c.jobid,
+j.emailname,
+j.deliveredtime,
+c.eventdate,
+c.subscriberkey,
+c.Domain,
+c.URL,
+c.LinkName,
+c.LinkContent
+from [_job] AS j
+       INNER JOIN [_click] AS c
+               ON j.jobid = c.jobid
+               LEFT OUTER JOIN [_Sent] s
+               ON s.jobid = c.jobid
+               AND s.ListID = c.ListID AND s.BatchID = c.BatchID AND s.SubscriberID = c.SubscriberID
+WHERE  j.emailname='SFMC_PRJ002187 Interim_01 DOR_email_may SL1'
+AND DATEDIFF(second, s.EventDate, c.EventDate) >= 100
+===========
+
+
+
+SELECT 
+c.jobid,
+j.emailname,
+j.deliveredtime,
+max(c.eventdate) as ClickTime,
+c.subscriberkey,
+c.Domain,
+c.URL,
+c.LinkName,
+c.LinkContent
+from [_job] AS j
+       INNER JOIN [_click] AS c
+               ON j.jobid = c.jobid
+               LEFT OUTER JOIN [_Sent] s
+               ON s.jobid = c.jobid
+               AND s.ListID = c.ListID AND s.BatchID = c.BatchID AND s.SubscriberID = c.SubscriberID
+WHERE  j.emailname='SFMC_PRJ002187 Interim_01 DOR_email_may SL1'
+and c.URL not like '%clickPixel%'
+group by c.jobid,j.emailname,j.deliveredtime,c.subscriberkey,c.Domain,c.URL,c.LinkName,c.LinkContent
+
+=======
+
+combining both the options below.  but not useful
+========
+
+SELECT 
+c.jobid,
+j.emailname,
+j.deliveredtime,
+max(c.eventdate) as ClickTime
+c.subscriberkey,
+c.Domain,
+c.URL,
+c.LinkName,
+c.LinkContent
+from [_job] AS j
+       INNER JOIN [_click] AS c
+               ON j.jobid = c.jobid
+               LEFT OUTER JOIN [_Sent] s
+               ON s.jobid = c.jobid
+               AND s.ListID = c.ListID AND s.BatchID = c.BatchID AND s.SubscriberID = c.SubscriberID
+WHERE  j.emailname='SFMC_PRJ002187 Interim_01 DOR_email_may SL1'
+AND DATEDIFF(second, s.EventDate, c.EventDate) >= 100
+group by c.jobid,j.emailname,j.deliveredtime,c.subscriberkey,c.Domain,c.URL,c.LinkName,c.LinkContent
+
+
+===========
+
+
+
+select d.jobid,d.emailname,d.sendtime,max(d.clicktime),d.subscriberkey,d.Domain,
+d.URL,d.LinkName,d.LinkContent
+from 
+(SELECT 
+c.jobid,c.emailname,c.sendtime,c.clicktime,c.subscriberkey,c.Domain,
+c.URL,c.LinkName,c.LinkContent
+from NPI_Clicks_Analysis1 c
+where c.URL like '%clickPixel%')tmp INNER JOIN NPI_Clicks_Analysis1 d
+ON tmp.subscriberkey=d.subscriberkey
+where d.URL not like '%clickPixel%'
+and DATEDIFF(second, tmp.clicktime, d.clicktime) >20
+group by d.jobid,d.emailname,d.sendtime,d.subscriberkey,d.Domain,d.URL,d.LinkName,d.LinkContent
+
+
+============
+
+
+
+select tmp.jobid,tmp.emailname,tmp.sendtime,tmp.clicktime,tmp.subscriberkey,tmp.Domain,
+tmp.URL,tmp.LinkName,tmp.LinkContent
+from
+(select d.jobid,d.emailname,d.sendtime,max(d.clicktime)as clicktime,d.subscriberkey,d.Domain,
+d.URL,d.LinkName,d.LinkContent
+from NPI_Clicks_Analysis1 d
+where d.URL not like '%clickPixel%'
+group by d.jobid,d.emailname,d.sendtime,d.subscriberkey,d.Domain,d.URL,d.LinkName,d.LinkContent)tmp
+where DATEDIFF(second, tmp.sendtime, tmp.clicktime) > 120
+
+UNION
+
+select d.jobid,d.emailname,d.sendtime,max(d.clicktime)as clicktime,d.subscriberkey,d.Domain,
+d.URL,d.LinkName,d.LinkContent
+from 
+(SELECT 
+c.jobid,c.emailname,c.sendtime,c.clicktime,c.subscriberkey,c.Domain,
+c.URL,c.LinkName,c.LinkContent
+from NPI_Clicks_Analysis1 c
+where c.URL like '%clickPixel%')tmp INNER JOIN NPI_Clicks_Analysis1 d
+ON tmp.subscriberkey=d.subscriberkey
+where d.URL not like '%clickPixel%'
+and DATEDIFF(second, tmp.clicktime, d.clicktime) >20
+group by d.jobid,d.emailname,d.sendtime,d.subscriberkey,d.Domain,d.URL,d.LinkName,d.LinkContent
+=========
+
+
+
+-- FInal SQL---
+select tmp1.jobid,tmp1.emailname,tmp1.sendtime,tmp1.clicktime,tmp1.subscriberkey,tmp1.Domain,
+tmp1.URL,tmp1.LinkName,tmp1.LinkContent
+from 
+(select tmp.jobid,tmp.emailname,tmp.sendtime,tmp.clicktime,tmp.subscriberkey,tmp.Domain,
+tmp.URL,tmp.LinkName,tmp.LinkContent
+from
+(select d.jobid,d.emailname,d.sendtime,max(d.clicktime)as clicktime,d.subscriberkey,d.Domain,
+d.URL,d.LinkName,d.LinkContent
+from NPI_Clicks_Analysis1 d
+where d.URL not like '%clickPixel%'
+group by d.jobid,d.emailname,d.sendtime,d.subscriberkey,d.Domain,d.URL,d.LinkName,d.LinkContent)tmp
+where DATEDIFF(second, tmp.sendtime, tmp.clicktime) > 120
+
+UNION
+
+select d.jobid,d.emailname,d.sendtime,max(d.clicktime)as clicktime,d.subscriberkey,d.Domain,
+d.URL,d.LinkName,d.LinkContent
+from 
+(SELECT 
+c.jobid,c.emailname,c.sendtime,c.clicktime,c.subscriberkey,c.Domain,
+c.URL,c.LinkName,c.LinkContent
+from NPI_Clicks_Analysis1 c
+where c.URL like '%clickPixel%')tmp INNER JOIN NPI_Clicks_Analysis1 d
+ON tmp.subscriberkey=d.subscriberkey
+where d.URL not like '%clickPixel%'
+and DATEDIFF(second, tmp.clicktime, d.clicktime) >20
+group by d.jobid,d.emailname,d.sendtime,d.subscriberkey,d.Domain,d.URL,d.LinkName,d.LinkContent)tmp1
+==============
+
+
+select
+NPI,
+DATEADD(HOUR,Hours,SFMC_Processed_Date) as SendDueTime
+from NPI_Non_Responder_V2
+where SendDueTime is null;
+
+============
+
+select
+NPI,
+EventType,
+Hours,
+Project,
+Campaign,
+Phase,
+SendDueTime
+from NPI_Non_Responder_V2
+where SendDueTime <= Dateadd(day, 0, Getdate())
+and SFMC_Processed_Date is null
+
+
+===========================
+
+
+
+select tmp1.jobid,tmp1.emailname,tmp1.sendtime, max(tmp1.clicktime) as clicktime,tmp1.subscriberkey,tmp1.Domain,
+tmp1.URL,tmp1.LinkName,tmp1.LinkContent
+from
+(
+select d.jobid,d.emailname,d.sendtime,d.subscriberkey,d.clicktime,DATEDIFF(second, tmp.clicktime, d.clicktime) as clicktime_diff,
+d.Domain,d.URL,d.LinkName,d.LinkContent
+from 
+(
+SELECT c.jobid,c.emailname,c.sendtime,c.clicktime,c.subscriberkey,c.Domain,c.URL,c.LinkName,c.LinkContent
+from NPI_Clicks_Analysis1 c
+where c.URL like '%clickPixel%'
+)tmp INNER JOIN NPI_Clicks_Analysis1 d
+ON tmp.subscriberkey=d.subscriberkey
+where d.URL not like '%clickPixel%'
+and d.subscriberkey='1699734251')tmp1
+where ABS(tmp1.clicktime_diff) > 20
+group by tmp1.jobid,tmp1.emailname,tmp1.sendtime,tmp1.subscriberkey,tmp1.Domain,tmp1.URL,tmp1.LinkName,tmp1.LinkContent
+
+========
+
+select d.jobid,d.emailname,d.sendtime,d.subscriberkey,d.clicktime,DATEDIFF(second, tmp.clicktime, d.clicktime) as clicktime_diff,
+d.Domain,d.URL,d.LinkName,d.LinkContent
+from 
+(
+SELECT c.jobid,c.emailname,c.sendtime,c.clicktime,c.subscriberkey,c.Domain,c.URL,c.LinkName,c.LinkContent
+from NPI_Clicks_Analysis1 c
+where c.URL like '%clickPixel%'
+)tmp INNER JOIN NPI_Clicks_Analysis1 d
+ON tmp.subscriberkey=d.subscriberkey
+where d.URL not like '%clickPixel%'
+and d.subscriberkey='1699734251'
+and d.URL='https://www.aveooncology.com/privacy-policy?LINK=Privacy_Policy'
+
+==========
+
+
+(SELECT c.jobid,c.emailname,c.sendtime,c.clicktime,c.subscriberkey,c.Domain,c.URL,c.LinkName,c.LinkContent,
+ROW_NUMBER()OVER(PARTITION BY c.subscriberkey ORDER BY c.clicktime asc) AS ranknum
+from NPI_Clicks_Analysis1 c
+where c.URL like '%clickPixel%');
+
+
+
+SELECT c.clicktime,c.subscriberkey
+from NPI_Clicks_Analysis1 c
+where c.URL like '%clickPixel%'
+and c.subscriberkey='1699734251'
+group by c.clicktime,c.subscriberkey
+
+
+==========
+
+
+
+SELECT 
+c.jobid,c.emailname,c.sendtime,c.clicktime,c.subscriberkey,c.Domain,c.URL,c.LinkName,c.LinkContent
+FROM NPI_Clicks_Analysis1 c
+WHERE
+(
+SELECT 
+			COUNT(*) 
+		FROM NPI_Clicks_Analysis1 A
+		WHERE 
+			A.SubscriberKey = c.SubscriberKey
+			AND
+			A.URL like '%clickPixel%'
+			AND
+			ABS(DATEDIFF(SECOND, A.ClickTime, c.ClickTime)) <= 20
+) = 0
+
+==============
+
+SELECT 
+c.jobid,c.emailname,c.sendtime,max(c.clicktime) as clicktime,
+c.subscriberkey,c.Domain,c.URL,c.LinkName,c.LinkContent
+FROM NPI_Clicks_Analysis1 c
+WHERE
+	DATEDIFF(SECOND, c.SendTime, c.ClickTime) > 100
+	AND
+		(
+			SELECT 
+			COUNT(*) 
+		FROM NPI_Clicks_Analysis1 A
+		WHERE 
+			A.SubscriberKey = c.SubscriberKey
+			AND
+			A.URL LIKE '%clickPixel%'
+			AND
+			ABS(DATEDIFF(SECOND, A.ClickTime, c.ClickTime)) <= 20
+	) = 0
+GROUP BY
+c.jobid,c.emailname,c.sendtime,c.subscriberkey,c.Domain,c.URL,c.LinkName,c.LinkContent
+===============
+
+
+
+SELECT 
+c.jobid,c.emailname,c.sendtime,max(c.clicktime) as clicktime,
+c.subscriberkey,c.Domain,c.URL,c.LinkName,c.LinkContent
+FROM NPI_Clicks_Analysis1 c
+WHERE
+	DATEDIFF(SECOND, c.SendTime, c.ClickTime) > 100
+	AND
+	(
+		SELECT 
+			COUNT(*) 
+		FROM NPI_Clicks_Analysis1 A
+		WHERE 
+			A.SubscriberKey = c.SubscriberKey
+			AND
+			A.URL LIKE '%clickPixel%'
+			AND
+			ABS(DATEDIFF(SECOND, A.ClickTime, c.ClickTime)) <= 20
+	) = 0
+	AND
+		(
+			SELECT 
+			COUNT(*) 
+		FROM NPI_Clicks_Analysis1 B
+		WHERE 
+			B.SubscriberKey = c.SubscriberKey
+			AND
+			ABS(DATEDIFF(SECOND, B.ClickTime, c.ClickTime)) < 60
+	) <= 10
+GROUP BY
+c.jobid,c.emailname,c.sendtime,c.subscriberkey,c.Domain,c.URL,c.LinkName,c.LinkContent
+==========
+
+
+
+select NPI, SFMC_Merged_Email_Address
+from Initial_Ingest_V2_07112024
+where FOTIVDA_Tier in ('Tier 1','Tier 2','Tier 3')
+and SFMC_Merged_Email_Address is not null
+==========
+
+
+
+SELECT
+A.npi,
+A.Action_Source,
+COALESCE(s.EmailAddress, B.SFMC_Merged_Email_Address) as SFMC_Merged_Email_Address
+from RXNT_Relevate_Import_Data A LEFT OUTER JOIN ent._ListSubscribers s 
+ON A.npi = s.subscriberkey
+LEFT OUTER JOIN ENT.Initial_AudList_ValidRecs_041124 B
+ON A.NPI =B.NPI_vod__c
+
+
+
+=======
+
+SELECT
+A.npi,
+A.Action_Source,
+A.SFMC_Merged_Email_Address
+from RXNT_Relevate_Import_Data A
+where A.SFMC_Merged_Email_Address is null
+
+===========
+
+
+select SFMC_Merged_Email_Address, count(*)
+from RXNT_Relevate_Dataload_journeytrigger
+group by SFMC_Merged_Email_Address
+having count(*) > 1
+
+==========
+
+SELECT j.jobid,
+       j.emailname,
+       j.deliveredtime AS 'SendTime',
+       max(o.eventdate) AS 'ClickTime',
+       o.subscriberkey,
+       'Clicks' as 'EventType',
+       o.Domain,
+       o.URL,
+       o.LinkName,
+       o.LinkContent
+FROM   [_job] AS j
+       INNER JOIN [_click] AS o
+               ON j.jobid = o.jobid
+       WHERE o.eventdate > Dateadd(day, -1, Getdate())
+       and o.subscriberkey in ('9900000018','9900000012','9900000011','9900000013','9999988446','9999988193','9999957596','9999918566')
+       group by j.jobid,j.emailname,j.deliveredtime,o.subscriberkey,o.Domain,o.URL,o.LinkName,o.LinkContent
+===============
+
+
+--- inserting test records into MS SQL Server----------------
+INSERT INTO [dbo].[TestUserMetadata]
+           ([TestUserNPI]
+           ,[StartDate]
+           ,[EndDate])
+     VALUES
+		   --('7777777792','2023-09-01', NULL,)
+		  ( '7777777791','2023-09-01', NULL),
+		   ('7777777790','2023-09-01', NULL),
+('7777777707','2023-09-01', NULL),
+('7777777705','2023-09-01', NULL),
+('7777777704','2023-09-01', NULL),
+('7777777703','2023-09-01', NULL),
+('7777777702','2023-09-01', NULL),
+('7777777700','2023-09-01', NULL),
+('6666622443','2023-09-01', NULL),
+('3131313138','2023-09-01', NULL)
+
+GO
+
+
+============
+
+
+
+
+select NPI 
+from Initial_Ingest_V2_Target_Tiermarket_AHP
+where NPI in (select NPI from RXNT_Relevate_Dataload_journeytrigger);
+
+
+select 
+s.SubscriberKey,
+jo.emailname,
+jo.EmailSubject,
+s.eventdate AS SendTime,
+s.jobid,
+'SFMC Sends' as EventType
+from    [_sent] s
+INNER JOIN [_job] jo
+              ON jo.jobid=s.jobid
+WHERE s.eventdate > Dateadd(day, -1, Getdate())
+and (emailname like '%NBA%' and emailname like '%Camp_Part_01 Phase_01%')
+
+
+
+select SubscriberKey, count(*)
+from NPI_Sends
+group by SubscriberKey
+having count(*) >1
+
+
+select tmp.SubscriberKey, emailname
+from 
+(
+select SubscriberKey, count(*) as count1
+from NPI_Sends
+group by SubscriberKey
+having count(*) >1
+)tmp INNER JOIN NPI_Sends B
+ON tmp.SubscriberKey=B.SubscriberKey
+group by tmp.SubscriberKey, emailname
+
+
+
+select tmp.SubscriberKey as NPI, emailname, EmailSubject
+from 
+(
+select SubscriberKey, count(*) as count1
+from NPI_Sends
+group by SubscriberKey
+having count(*) >1
+)tmp INNER JOIN NPI_Sends B
+ON tmp.SubscriberKey=B.SubscriberKey
+group by tmp.SubscriberKey, emailname, EmailSubject
+
+
+=======
+
+select NPI from NPI_NBA_TierMarket_AHP_DuplicateNPIs
+where NPI in (select SubscriberKey from NPI_Unsubscribes_History)
