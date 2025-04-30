@@ -1,0 +1,16 @@
+a) Create a copy of a DE RXNT_dataload2
+
+b) Keep NPI as Primary key.
+
+c) Rank from bottom-most priority.
+
+d) Create SQLs for each priority from bottom-most and run it in the sequence.
+
+e) Map the copied DE to Contact Builder 
+
+f) Map it in Journey builder.
+
+g) Follow the Version 2 logic.  check this.
+
+
+
